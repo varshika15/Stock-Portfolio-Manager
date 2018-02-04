@@ -14,10 +14,10 @@ import matplotlib.pyplot as plt
 #list of stocks in portfolio
 stocks = ['AAPL','MSFT','AMZN','SPY']
 
-#download daily price data for each of the stocks in the portfolio
+#get data for each of the stocks in the portfolio
 data = web.DataReader(stocks,data_source='yahoo',start='01/01/2010')['Adj Close']
 
-#convert daily stock prices into daily returns
+#calculate percentage change
 returns = data.pct_change()
 
 #calculate mean daily return and covariance of daily returns
@@ -28,7 +28,6 @@ cov_matrix = returns.cov()
 num_portfolios = 25000
 
 #set up array to hold results
-#We have increased the size of the array to hold the weight values for each stock
 results = np.zeros((4+len(stocks)-1,num_portfolios))
 
 for i in xrange(num_portfolios):
@@ -68,6 +67,7 @@ plt.scatter(max_sharpe_port[1],max_sharpe_port[0],marker=(5,1,0),color='r',s=100
 #plot green star to highlight position of minimum variance portfolio
 plt.scatter(min_vol_port[1],min_vol_port[0],marker=(5,1,0),color='g',s=1000)
 
+#print portfolio with highest Sharpe Ratio
 print(max_sharpe_port)
-
+#print portfolio with minimum volitality
 print(min_vol_port)

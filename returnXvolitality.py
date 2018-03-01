@@ -8,14 +8,15 @@ Created on Sun Feb 04 16:47:52 2018
 import numpy as np
 import pandas as pd
 import pandas_datareader.data as web
+import fix_yahoo_finance as yf
 import matplotlib.pyplot as plt
-
+yf.pdr_override()
 
 #list of stocks in portfolio
 stocks = ['AAPL','MSFT','AMZN','SPY']
 
 #get data for each of the stocks in the portfolio
-data = web.DataReader(stocks,data_source='yahoo',start='01/01/2010')['Adj Close']
+data = web.get_data_yahoo(stocks,start='2010-01-01')['Adj Close']
 
 #calculate percentage change
 returns = data.pct_change()
@@ -30,7 +31,7 @@ num_portfolios = 25000
 #set up array to hold results
 results = np.zeros((4+len(stocks)-1,num_portfolios))
 
-for i in xrange(num_portfolios):
+for i in range(num_portfolios):
     #select random weights for portfolio holdings
     weights = np.array(np.random.random(4))
     #rebalance weights to sum to 1
@@ -71,3 +72,5 @@ plt.scatter(min_vol_port[1],min_vol_port[0],marker=(5,1,0),color='g',s=1000)
 print(max_sharpe_port)
 #print portfolio with minimum volitality
 print(min_vol_port)
+
+
